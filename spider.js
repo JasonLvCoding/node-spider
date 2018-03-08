@@ -34,18 +34,15 @@ https.get(sourceUrl,res => {
 		});
 		
 		movies.map((movie) => {
-			
 			console.log(movie.imgUrl);
 			https.get(movie.imgUrl, res => {
 				
 				if(!res) return;
 				
 				let data = '';
-				
 				res.setEncoding('binary');
 				res.on('data', chunk => data+=chunk );
 				res.on('end', err => {
-				
 					fs.writeFile('img/'+ path.basename(movie.imgUrl), data, 'binary', err => {
 						
 						if(err) return console.log(err);
@@ -65,11 +62,9 @@ https.get(sourceUrl,res => {
 	res.on('data', chunk => htmlCode += chunk );
 	
 	res.on('end', () => {
-	
 		let $ = cheerio.load(htmlCode);
 		
 		$('.item').each((index,item) => {
-			 
 			 let movie = {
 				 title: $('.title', item).text(),
 				 star: $('.rating_num', item).text(),
@@ -78,9 +73,7 @@ https.get(sourceUrl,res => {
 				movies.push(movie);
 			 
 		 });
-		
 		saveData(movies);
-		
 	});
 	
 	res.on('error',(err) => console.log(err));
